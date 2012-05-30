@@ -65,5 +65,5 @@ Backstop is distributed under a 3-clause BSD license.
 
 ## Thanks
 
-Thanks to Michael Gorsuch (@gorsuch) for his initial work on the collectd parser as part of the original "Mitt" application that preceded Backstop.
+Thanks to Michael Gorsuch (@gorsuch) for his work on the collectd parser and the "Mitt" application that preceded Backstop.
 
