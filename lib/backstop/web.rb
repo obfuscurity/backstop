@@ -14,14 +14,6 @@ module Backstop
       @@sockets = []
     end
 
-    before do
-      if !Config.devcloud_url.nil?
-        if request.url =~ /#{Config.devcloud_url}/
-          halt 503, "devclouds currently denied"
-        end
-      end
-    end
-
     helpers do
       def sockets
         if !@@sockets.empty?
