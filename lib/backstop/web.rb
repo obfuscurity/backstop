@@ -61,6 +61,7 @@ module Backstop
       rescue JSON::ParserError
         halt 400, "JSON is required"
       end
+      p data
       halt 400, "missing fields" unless (data['repository'] && data['commits'])
       data["source"] = "github"
       data["ref"].gsub!(/\//, ".")
