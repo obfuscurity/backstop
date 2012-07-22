@@ -64,9 +64,11 @@ module Backstop
       halt 400, "missing fields" unless (data['repository'] && data['commits'])
       data["source"] = "github"
       data["ref"].gsub!(/\//, ".")
+      p data
       data["commits"].each do |commit|
         measure_time = DateTime.parse(commit["timestamp"]).strftime("%s")
         s = sockets.sample
+        p "#{data['source']}.#{data['ref']}.#{commit['id']} 1 #{measure_time}"
         s.puts "#{data['source']}.#{data['ref']}.#{commit['id']} 1 #{measure_time}"
       end
       "ok"
