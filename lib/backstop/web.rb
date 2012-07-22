@@ -55,6 +55,23 @@ module Backstop
       "ok"
     end
     
+    post '/github' do
+      begin
+        data = JSON.parse(request.body.read)
+      rescue JSON::ParserError
+        halt 400, "JSON is required"
+      end
+      halt 400, "missing fields" unless (data['repository'] && data['commits'])
+      data["source"] = "github"
+      data["ref"].gsub!(/\//, ".")
+      data["commits"].each do |commit|
+        measure_time = DateTime.parse(commit["timestamp"]).strftime("%s")
+        s = sockets.sample
+        s.puts "#{data['source']}.#{data['ref']}.#{commit['id']} 1 #{measure_time}"
+      end
+      "ok"
+    end
+
     post '/publish/:name' do
       begin
         data = JSON.parse(request.body.read)
