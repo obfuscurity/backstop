@@ -18,6 +18,10 @@ Backstop supports submission of metrics via the Collectd [write_http](http://col
 </Plugin>
 ```
 
+### GitHub Post-Receive Hooks
+
+Backstop can receive commit data from GitHub [post-receive webhooks](https://help.github.com/articles/post-receive-hooks). Your WebHook URL should consist of the Backstop service URL with the `/github` endpoint. For example, `https://backstop.example.com/github`.
+
 ### Custom Metrics
 
 Use the `/publish` endpoint in conjunction with one of the approved `PREFIXES` for submitting metrics to Backstop. In most environments it makes sense to use distinct prefixes for normal (e.g. gauge, counters, etc) metrics vs annotation (event-style) metrics.
