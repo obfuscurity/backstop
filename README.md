@@ -20,7 +20,9 @@ Backstop supports submission of metrics via the Collectd [write_http](http://col
 
 ### GitHub Post-Receive Hooks
 
-Backstop can receive commit data from GitHub [post-receive webhooks](https://help.github.com/articles/post-receive-hooks). Your WebHook URL should consist of the Backstop service URL with the `/github` endpoint. For example, `https://backstop.example.com/github`. All GitHub commit metrics contain the project name, branch information, and commit identifier, and are stored with a value of `1` (e.g. `github.project.refs.heads.master.10af2cb02eadd4cb1a3e43aa9cae47ef2cd07016 1 1203116237`). These can then be visualized as annotation-style metrics using Graphite's `drawAsFinite()` function.
+Backstop can receive commit data from GitHub [post-receive webhooks](https://help.github.com/articles/post-receive-hooks). Your WebHook URL should consist of the Backstop service URL with the `/github` endpoint. For example, `https://backstop.example.com/github`.
+
+All GitHub commit metrics contain the project name, branch information, author email and commit identifier, and are stored with a value of `1` (e.g. `github.project.refs.heads.master.bob-example-com.10af2cb02eadd4cb1a3e43aa9cae47ef2cd07016 1 1203116237`). These can then be visualized as annotation-style metrics using Graphite's `drawAsFinite()` function.
 
 ### Custom Metrics
 
