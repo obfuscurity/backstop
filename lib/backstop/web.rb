@@ -67,7 +67,7 @@ module Backstop
       data["commits"].each do |commit|
         s = sockets.sample
         measure_time = DateTime.parse(commit["timestamp"]).strftime("%s")
-        s.puts "#{data['source']}.#{data['ref']}.#{commit['id']} 1 #{measure_time}"
+        s.puts "#{data['source']}.#{data['repository']['name']}.#{data['ref']}.#{commit['id']} 1 #{measure_time}"
       end
       "ok"
     end
