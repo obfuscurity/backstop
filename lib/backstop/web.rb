@@ -7,28 +7,15 @@ require 'backstop/collectd/parser'
 
 module Backstop
   class Application < Sinatra::Base
-
     configure do
       enable :logging
       require 'newrelic_rpm'
-      @@sockets = []
+      @@publisher = nil
     end
 
     helpers do
-      def sockets
-        if !@@sockets.empty?
-          return @@sockets
-        else
-          @@sockets = []
-          Config.carbon_urls.each do |c|
-            if (c =~ /^carbon:\/\//)
-              c.gsub!(/carbon:\/\//, "")
-              host, port = c.split(":")
-              s = TCPSocket.new host, port
-              @@sockets.push s
-            end
-          end
-        end
+      def publisher
+        @@publisher ||= Backstop::Publisher.new(Config.carbon_urls)
       end
     end
 
@@ -47,9 +34,8 @@ module Backstop
         results.each do |r|
           r["source"] = "collectd"
           halt 400, "missing fields" unless (r[:cloud] && r[:slot] && r[:id] && r[:metric] && r[:value] && r[:measure_time])
-          s = sockets.sample
           r[:cloud].gsub!(/\./, "-")
-          s.puts "mitt.#{r[:cloud]}.#{r[:slot]}.#{r[:id]}.#{r[:metric]} #{r[:value]} #{r[:measure_time]}" if s
+          publisher.publish("mitt.#{r[:cloud]}.#{r[:slot]}.#{r[:id]}.#{r[:metric]}", r[:value], r[:measure_time])
         end
       end
       "ok"
@@ -68,8 +54,7 @@ module Backstop
         repo = data['repository']['name']
         author = commit['author']['email'].gsub(/[\.@]/, "-")
         measure_time = DateTime.parse(commit["timestamp"]).strftime("%s")
-        s = sockets.sample
-        s.puts "#{data['source']}.#{repo}.#{data['ref']}.#{author}.#{commit['id']} 1 #{measure_time}"
+        publisher.publish("#{data['source']}.#{repo}.#{data['ref']}.#{author}.#{commit['id']}", 1, measure_time)
       end
       "ok"
     end
@@ -85,21 +70,17 @@ module Backstop
           data.each do |item|
             item["source"] = params[:name]
             halt 400, "missing fields" unless (item['metric'] && item['value'] && item['measure_time'])
-            s = sockets.sample
-            s.puts "#{item['source']}.#{item['metric']} #{item['value']} #{item['measure_time']}"
+            publisher.publish("#{item['source']}.#{item['metric']}", item['value'], item['measure_time'])
           end 
         else 
           data["source"] = params[:name]
           halt 400, "missing fields" unless (data['metric'] && data['value'] && data['measure_time'])
-          s = sockets.sample
-          s.puts "#{data['source']}.#{data['metric']} #{data['value']} #{data['measure_time']}"
+          publisher.publish("#{data['source']}.#{data['metric']}", data['value'], data['measure_time'])
         end
         "ok"
       else
         halt 404, "unknown prefix"
       end
     end
-
   end
 end
-
