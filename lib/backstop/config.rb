@@ -8,6 +8,5 @@ module Backstop
     def self.port; env!("PORT").to_i; end
     def self.carbon_urls; env!("CARBON_URLS").split(","); end
     def self.prefixes; env!("PREFIXES").split(","); end
-    def self.test?; ENV.key?('TEST'); end
   end
 end
