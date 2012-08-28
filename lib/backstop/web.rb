@@ -99,7 +99,5 @@ module Backstop
         halt 404, "unknown prefix"
       end
     end
-
   end
 end
-
