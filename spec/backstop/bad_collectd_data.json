@@ -1,0 +1,13 @@
+[
+   {
+     "values":  [1901474177],
+     "dstypes":  ["counter"],
+     "dsnames":    ["value"],
+     "interval":          10,
+     "host":            "leeloo.octo.it",
+     "plugin":          "cpu",
+     "plugin_instance": "0",
+     "type":            "cpu",
+     "type_instance":   "idle"
+   }
+]
