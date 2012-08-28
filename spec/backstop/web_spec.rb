@@ -47,7 +47,7 @@ describe Backstop::Application do
   end
 
   context 'POST /collectd' do
-    let(:collectd_data) { File.open(File.dirname(__FILE__) + '/good_collectd_data.json').read }
+    let(:good_collectd_data) { File.open(File.dirname(__FILE__) + '/good_collectd_data.json').read }
     let(:bad_collectd_data) { File.open(File.dirname(__FILE__) + '/bad_collectd_data.json').read }
 
     it 'should require JSON' do
@@ -60,7 +60,7 @@ describe Backstop::Application do
       p = double('publisher')
       Backstop::Publisher.should_receive(:new) { p }
       p.should_receive(:publish).with('mitt.leeloo.octo.it.cpu.0.idle', 1901474177, 1280959128)      
-      post '/collectd', collectd_data
+      post '/collectd', good_collectd_data
       last_response.body.should eq('ok')
       last_response.status.should eq(200)
     end
@@ -69,6 +69,31 @@ describe Backstop::Application do
       post '/collectd', bad_collectd_data
       last_response.status.should eq(400)
       last_response.body.should eq('missing fields')
+    end
+  end
+
+  context 'POST /github' do
+    let(:good_github_data) { File.open(File.dirname(__FILE__) + '/good_github_data.json').read }
+    let(:bad_github_data) { File.open(File.dirname(__FILE__) + '/bad_github_data.json').read }
+
+    it 'should require JSON' do
+      post '/github', { :payload => 'foo' }
+      last_response.should_not be_ok
+      last_response.status.should eq(400) 
+    end
+
+    it 'should take a github push' do
+      p = double('publisher')
+      Backstop::Publisher.should_receive(:new) { p }
+      p.should_receive(:publish).with('github.github.refs.heads.master.chris-ozmm-org.de8251ff97ee194a289832576287d6f8ad74e3d0', 1, '1203114994')
+      p.should_receive(:publish).with('github.github.refs.heads.master.chris-ozmm-org.41a212ee83ca127e3c8cf465891ab7216a705f59', 1, '1203116237')
+      post '/github', { :payload => good_github_data }
+      last_response.should be_ok
+    end
+
+    it 'should complain if missing fields' do
+      post '/github', { :payload => bad_github_data }
+      last_response.should_not be_ok
     end
   end
 end

@@ -54,8 +54,7 @@ module Backstop
         repo = data['repository']['name']
         author = commit['author']['email'].gsub(/[\.@]/, "-")
         measure_time = DateTime.parse(commit["timestamp"]).strftime("%s")
-        s = sockets.sample
-        s.puts "#{data['source']}.#{repo}.#{data['ref']}.#{author}.#{commit['id']} 1 #{measure_time}"
+        publisher.publish("#{data['source']}.#{repo}.#{data['ref']}.#{author}.#{commit['id']}", 1, measure_time)
       end
       "ok"
     end
