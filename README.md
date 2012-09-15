@@ -1,5 +1,7 @@
 # Backstop
 
+[![Build Status](https://secure.travis-ci.org/obfuscurity/backstop.png?branch=master)](http://travis-ci.org/obfuscurity/backstop)
+
 Backstop is a simple endpoint for submitting metrics to Graphite. It accepts JSON data via HTTP POST and proxies the data to one or more Carbon/Graphite listeners.
 
 ## Usage
