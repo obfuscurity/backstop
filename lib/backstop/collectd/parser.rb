@@ -4,7 +4,7 @@ class CollectdData
   
   # ALL PLUGIN CHECKS ARE EXPECTED TO RETURN AN ARRAY OF HASHES OR AN EMPTY ARRAY
   Dir[File.dirname(__FILE__) + '/plugins/*.rb'].each do |file|
-    f = File.basename(file).gsub(/\.rb/, "")
+    f = File.basename(file).gsub(/\.rb/, '')
     require "backstop/collectd/plugins/#{f}"
   end
 

@@ -3,11 +3,11 @@ class CollectdData
     # matches specific proceses
     if !data['plugin_instance'].empty?
       ps_value_map = {
-        "ps_count" => ["num_proc", "num_thread"],
-        "ps_disk_ops" => ["read", "write"],
-        "ps_disk_octets" => ["read", "write"],
-        "ps_pagefaults" => ["minor", "major"],
-        "ps_cputime" => ["user", "system"]
+        'ps_count' => ['num_proc', 'num_thread'],
+        'ps_disk_ops' => ['read', 'write'],
+        'ps_disk_octets' => ['read', 'write'],
+        'ps_pagefaults' => ['minor', 'major'],
+        'ps_cputime' => ['user', 'system']
       }
   
       if (map = ps_value_map[data['type']])

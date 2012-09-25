@@ -4,9 +4,9 @@ module Backstop
       ENV[key] || raise("missing #{key}")
     end
 
-    def self.deploy; env!("DEPLOY"); end
-    def self.port; env!("PORT").to_i; end
-    def self.carbon_urls; env!("CARBON_URLS").split(","); end
-    def self.prefixes; env!("PREFIXES").split(","); end
+    def self.deploy; env!('DEPLOY'); end
+    def self.port; env!('PORT').to_i; end
+    def self.carbon_urls; env!('CARBON_URLS').split(','); end
+    def self.prefixes; env!('PREFIXES').split(','); end
   end
 end
