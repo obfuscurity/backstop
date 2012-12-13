@@ -2,6 +2,7 @@ require 'sinatra'
 require 'socket'
 require 'json'
 
+require 'backstop/publisher'
 require 'backstop/config'
 require 'backstop/collectd/parser'
 
