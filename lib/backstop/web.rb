@@ -1,10 +1,7 @@
 require 'sinatra'
-require 'socket'
 require 'json'
 
-require 'backstop/publisher'
-require 'backstop/config'
-require 'backstop/collectd/parser'
+require 'backstop'
 
 module Backstop
   class Application < Sinatra::Base
