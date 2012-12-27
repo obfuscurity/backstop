@@ -52,6 +52,10 @@ RestClient.post("https://backstop.example.com/publish/note",
    [{:metric => "foobar.release", :value => "v214", :measure_time => Time.now.to_i}].to_json)
 ```
 
+#### Using with Hosted Graphite
+
+Graphite hosting service [Hosted Graphite](https://www.hostedgraphite.com) requires metrics to be submitted with an API key prepended to the metric.  To use their service, just define the `API_KEY` environment variable.
+
 ## Deployment
 
 ### Local
