@@ -13,7 +13,7 @@ module Backstop
 
     helpers do
       def publisher
-        @@publisher ||= Backstop::Publisher.new(Config.carbon_urls)
+        @@publisher ||= Backstop::Publisher.new(Config.carbon_urls, :api_key => Config.api_key)
       end
     end
 
