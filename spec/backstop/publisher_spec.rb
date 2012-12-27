@@ -29,4 +29,14 @@ describe Backstop::Publisher do
     socket_double.should_receive(:puts).with('foo 1 12345')
     b.publish('foo', 1) 
   end
+
+  it 'should apply an api key if you provide one' do
+    urls = ['tcp://10.0.0.1:5000']
+    socket_double = double('TCPSocket')
+    TCPSocket.should_receive(:new).with('10.0.0.1', 5000) { socket_double }
+    b = Backstop::Publisher.new(urls, :api_key => '12345')
+
+    socket_double.should_receive(:puts).with('12345.foo 1 1')
+    b.publish('foo', 1, 1)
+  end
 end
