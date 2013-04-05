@@ -58,12 +58,13 @@ module Backstop
     end
 
     post '/pagerduty' do
-      p request.body.read
-      #begin
-      #  data = JSON.parse(params[:payload])
-      #rescue JSON::ParserError
-      #  halt 400, 'JSON is required'
-      #end
+      #p request.body.read
+      begin
+        data = params
+      rescue
+        halt 400, 'unknown payload'
+      end
+      p data
       #data['source'] = 'pagerduty'
       #data['ref'].gsub!(/\//, '.')
       #data['commits'].each do |commit|
