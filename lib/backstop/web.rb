@@ -57,6 +57,24 @@ module Backstop
       'ok'
     end
 
+    post '/pagerduty' do
+      p request.body.read
+      #begin
+      #  data = JSON.parse(params[:payload])
+      #rescue JSON::ParserError
+      #  halt 400, 'JSON is required'
+      #end
+      #data['source'] = 'pagerduty'
+      #data['ref'].gsub!(/\//, '.')
+      #data['commits'].each do |commit|
+      #  repo = data['repository']['name']
+      #  author = commit['author']['email'].gsub(/[\.@]/, '-')
+      #  measure_time = DateTime.parse(commit['timestamp']).strftime('%s')
+      #  publisher.publish("#{data['source']}.#{repo}.#{data['ref']}.#{author}.#{commit['id']}", 1, measure_time)
+      #end
+      'ok'
+    end
+
     post '/publish/:name' do
       begin
         data = JSON.parse(request.body.read)
