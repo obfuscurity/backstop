@@ -35,6 +35,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler
   json
   newrelic_rpm
   rack-test

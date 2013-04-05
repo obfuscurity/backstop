@@ -1,5 +1,6 @@
 source :rubygems
 
+gem 'bundler'
 gem 'sinatra'
 gem 'thin'
 gem 'json'
