@@ -82,9 +82,7 @@ module Backstop
         puts "UNKNOWN ALERT: #{incident.to_json}"
         halt 400, 'unknown alert'
       end
-      data = incident
-      data['source'] = 'pagerduty'
-      publisher.publish("alerts.#{metric} 1 #{Time.parse(incident['created_on']).to_i}")
+      publisher.publish("alerts.#{metric}", 1, Time.parse(incident['created_on']).to_i)
       'ok'
     end
 
