@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'json'
+require 'time'
 
 require 'backstop'
 
@@ -54,6 +55,34 @@ module Backstop
         measure_time = DateTime.parse(commit['timestamp']).strftime('%s')
         publisher.publish("#{data['source']}.#{repo}.#{data['ref']}.#{author}.#{commit['id']}", 1, measure_time)
       end
+      'ok'
+    end
+
+    post '/pagerduty' do
+      begin
+        incident = params
+      rescue
+        halt 400, 'unknown payload'
+      end
+      case incident['service']['name']
+      when 'Pingdom'
+        metric = "pingdom.#{incident['incident_key'].gsub(/\./, '_').gsub(/[\(\)]/, '').gsub(/\s+/, '.')}"
+      when 'nagios'
+        data = incident['trigger_summary_data']
+        outage = data['SERVICEDESC'] === '' ? 'host_down' : data['SERVICEDESC']
+        begin
+          metric = "nagios.#{data['HOSTNAME'].gsub(/\./, '_')}.#{outage}"
+        rescue
+          puts "UNKNOWN ALERT: #{incident.to_json}"
+          halt 400, 'unknown alert'
+        end
+      when 'Enterprise Zendesk'
+        metric = "enterprise.zendesk.#{incident['service']['id']}"
+      else
+        puts "UNKNOWN ALERT: #{incident.to_json}"
+        halt 400, 'unknown alert'
+      end
+      publisher.publish("alerts.#{metric}", 1, Time.parse(incident['created_on']).to_i)
       'ok'
     end
 
