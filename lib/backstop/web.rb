@@ -58,21 +58,32 @@ module Backstop
     end
 
     post '/pagerduty' do
-      #p request.body.read
       begin
-        data = params
+        incident = params
       rescue
         halt 400, 'unknown payload'
       end
-      p data
-      #data['source'] = 'pagerduty'
-      #data['ref'].gsub!(/\//, '.')
-      #data['commits'].each do |commit|
-      #  repo = data['repository']['name']
-      #  author = commit['author']['email'].gsub(/[\.@]/, '-')
-      #  measure_time = DateTime.parse(commit['timestamp']).strftime('%s')
-      #  publisher.publish("#{data['source']}.#{repo}.#{data['ref']}.#{author}.#{commit['id']}", 1, measure_time)
-      #end
+      case incident['service']['name']
+      when 'Pingdom'
+        metric = "pingdom.#{incident['incident_key'].gsub(/\./, '_').gsub(/[\(\)]/, '').gsub(/\s+/, '.')}"
+      when 'nagios'
+        data = incident['trigger_summary_data']
+        outage = data['SERVICEDESC'] === '' ? 'host_down' : data['SERVICEDESC']
+        begin
+          metric = "nagios.#{data['HOSTNAME'].gsub(/\./, '_')}.#{outage}"
+        rescue
+          puts "UNKNOWN ALERT: #{incident.to_json}"
+          halt 400, 'unknown alert'
+        end
+      when 'Enterprise Zendesk'
+        metric = "enterprise.zendesk.#{incident['service']['id']}"
+      else
+        puts "UNKNOWN ALERT: #{incident.to_json}"
+        halt 400, 'unknown alert'
+      end
+      data = incident
+      data['source'] = 'pagerduty'
+      publisher.publish("alerts.#{metric} 1 #{Time.parse(incident['created_on']).to_i}")
       'ok'
     end
 
