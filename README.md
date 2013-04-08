@@ -24,7 +24,7 @@ Backstop supports submission of metrics via the Collectd [write_http](http://col
 
 Backstop can receive commit data from GitHub [post-receive webhooks](https://help.github.com/articles/post-receive-hooks). Your WebHook URL should consist of the Backstop service URL with the `/github` endpoint. For example, `https://backstop.example.com/github`.
 
-All GitHub commit metrics contain the project name, branch information, author email and commit identifier, and are stored with a value of `1`. These can then be visualized as annotation-style metrics using Graphite's `drawAsFinite()` function. Sample metric:
+All GitHub commit metrics contain the project name, branch information, author email and commit identifier, and are stored with a value of `1`. These can then be visualized as annotation-style metrics using Graphite's `drawAsInfinite()` function. Sample metric:
 
 ```
 github.project.refs.heads.master.bob-example-com.10af2cb02eadd4cb1a3e43aa9cae47ef2cd07016 1 1203116237
@@ -34,7 +34,7 @@ github.project.refs.heads.master.bob-example-com.10af2cb02eadd4cb1a3e43aa9cae47e
 
 Backstop can also receive PagerDuty incidents courtesy of Jesse Newland's [pagerduty-incident-webhooks](https://github.com/github/pagerduty-incident-webhooks) project. When deploying `pagerduty-incident-webhooks` make sure to set `PAGERDUTY_WEBHOOK_ENDPOINT` to your Backstop service URL with the `/pagerduty` endpoint. For example, `https://backstop.example.com/pagerduty`.
 
-Metrics will be stored under the `alerts` prefix with a value of `1`. These can then be visualized as annotation-style metrics using Graphite's `drawAsFinite()` function. Sample metric:
+Metrics will be stored under the `alerts` prefix with a value of `1`. These can then be visualized as annotation-style metrics using Graphite's `drawAsInfinite()` function. Sample metric:
 
 ```
 alerts.nagios.web1.diskspace 1 1365206103
