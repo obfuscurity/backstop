@@ -14,7 +14,13 @@ module Backstop
     end
 
     def publish(name, value, time=Time.now.to_i)
-      connections.sample.puts("#{metric_name(name)} #{value} #{time}")  
+      c = connections.sample
+      begin
+        c.puts("#{metric_name(name)} #{value} #{time}")  
+      rescue
+        c.reopen(c)
+        self.publish(name, value, time)
+      end
     end
   end
 end
