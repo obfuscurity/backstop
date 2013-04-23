@@ -76,7 +76,7 @@ $ export PREFIXES=...
 $ foreman start
 ```
 
-### Platform
+### Heroku
 
 ```bash
 $ heroku create -s cedar
