@@ -5,6 +5,7 @@ module Backstop
     def initialize(urls, opts={})
       @connections = []
       @connections = urls.map { |u| URI.parse(u) }.map { |u| TCPSocket.new(u.host, u.port) }
+      p @connections
       @api_key = opts[:api_key]
     end
 
