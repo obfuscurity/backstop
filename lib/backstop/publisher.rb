@@ -18,6 +18,7 @@ module Backstop
       begin
         c.puts("#{metric_name(name)} #{value} #{time}")  
       rescue
+        puts "connection lost, reopening socket"
         c.reopen(c)
         self.publish(name, value, time)
       end
