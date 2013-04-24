@@ -8,12 +8,20 @@ module Backstop
       @api_key = opts[:api_key]
     end
 
+    def close_all
+      connections.each { |c| c.close }
+    end
+
     def metric_name(name)
       api_key ? "#{api_key}.#{name}" : name  
     end
 
     def publish(name, value, time=Time.now.to_i)
-      connections.sample.puts("#{metric_name(name)} #{value} #{time}")  
+      begin
+        connections.sample.puts("#{metric_name(name)} #{value} #{time}")  
+      rescue Errno::EPIPE => e
+        raise e
+      end
     end
   end
 end
