@@ -30,6 +30,14 @@ module Backstop
       def publisher
         @@publisher ||= Backstop::Publisher.new(Config.carbon_urls, :api_key => Config.api_key)
       end
+      def send(metric, value, time)
+        begin
+          publisher.publish(metric, value, time)
+        rescue
+          publisher.close_all
+          @@publisher = nil
+        end
+      end
     end
 
     get '/health' do
@@ -48,7 +56,7 @@ module Backstop
           r['source'] = 'collectd'
           halt 400, 'missing fields' unless (r[:cloud] && r[:slot] && r[:id] && r[:metric] && r[:value] && r[:measure_time])
           r[:cloud].gsub!(/\./, '-')
-          publisher.publish("mitt.#{r[:cloud]}.#{r[:slot]}.#{r[:id]}.#{r[:metric]}", r[:value], r[:measure_time])
+          send("mitt.#{r[:cloud]}.#{r[:slot]}.#{r[:id]}.#{r[:metric]}", r[:value], r[:measure_time])
         end
       end
       'ok'
@@ -67,7 +75,7 @@ module Backstop
         repo = data['repository']['name']
         author = commit['author']['email'].gsub(/[\.@]/, '-')
         measure_time = DateTime.parse(commit['timestamp']).strftime('%s')
-        publisher.publish("#{data['source']}.#{repo}.#{data['ref']}.#{author}.#{commit['id']}", 1, measure_time)
+        send("#{data['source']}.#{repo}.#{data['ref']}.#{author}.#{commit['id']}", 1, measure_time)
       end
       'ok'
     end
@@ -96,7 +104,7 @@ module Backstop
         puts "UNKNOWN ALERT: #{incident.to_json}"
         halt 400, 'unknown alert'
       end
-      publisher.publish("alerts.#{metric}", 1, Time.parse(incident['created_on']).to_i)
+      send("alerts.#{metric}", 1, Time.parse(incident['created_on']).to_i)
       'ok'
     end
 
@@ -111,12 +119,12 @@ module Backstop
           data.each do |item|
             item['source'] = params[:name]
             halt 400, 'missing fields' unless (item['metric'] && item['value'] && item['measure_time'])
-            publisher.publish("#{item['source']}.#{item['metric']}", item['value'], item['measure_time'])
+            send("#{item['source']}.#{item['metric']}", item['value'], item['measure_time'])
           end 
         else 
           data['source'] = params[:name]
           halt 400, 'missing fields' unless (data['metric'] && data['value'] && data['measure_time'])
-          publisher.publish("#{data['source']}.#{data['metric']}", data['value'], data['measure_time'])
+          send("#{data['source']}.#{data['metric']}", data['value'], data['measure_time'])
         end
         'ok'
       else
