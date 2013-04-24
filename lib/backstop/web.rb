@@ -12,7 +12,21 @@ module Backstop
       @@publisher = nil
     end
 
+    before do
+      protected! unless request.path == '/health'
+    end
+
     helpers do
+      def protected!
+        return unless ENV['BACKSTOP_AUTH']
+        return if authorized?
+        headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
+        halt 401, "Not authorized\n"
+      end
+      def authorized?
+        @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+        @auth.provided? and @auth.basic? and @auth.credentials and @auth.credentials == ENV['BACKSTOP_AUTH'].split(':')
+      end
       def publisher
         @@publisher ||= Backstop::Publisher.new(Config.carbon_urls, :api_key => Config.api_key)
       end
