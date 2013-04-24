@@ -8,6 +8,10 @@ module Backstop
       @api_key = opts[:api_key]
     end
 
+    def close
+      connections.each { |c| c.close }
+    end
+
     def metric_name(name)
       api_key ? "#{api_key}.#{name}" : name  
     end
