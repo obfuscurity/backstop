@@ -68,11 +68,14 @@ Graphite hosting service [Hosted Graphite](https://www.hostedgraphite.com) requi
 
 ## Deployment
 
+Backstop supports optional Basic Authentication through Rack::Auth::Basic. Simply set BACKSTOP_AUTH to your colon-delimited credentials (e.g. `user:pass`).
+
 ### Local
 
 ```bash
 $ export CARBON_URLS=...
 $ export PREFIXES=...
+$ export BACKSTOP_AUTH=... (optional)
 $ foreman start
 ```
 
@@ -82,6 +85,7 @@ $ foreman start
 $ heroku create -s cedar
 $ heroku config:add CARBON_URLS=...
 $ heroku config:add PREFIXES=...
+$ heroku config:add BACKSTOP_AUTH=... (optional)
 $ git push heroku master
 ```
 
