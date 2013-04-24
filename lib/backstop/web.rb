@@ -20,9 +20,8 @@ module Backstop
         begin
           publisher.publish(metric, value, time)
         rescue
-          publisher.close
+          publisher.close_all
           @@publisher = nil
-          send(metric, value, time)
         end
       end
     end
@@ -43,7 +42,7 @@ module Backstop
           r['source'] = 'collectd'
           halt 400, 'missing fields' unless (r[:cloud] && r[:slot] && r[:id] && r[:metric] && r[:value] && r[:measure_time])
           r[:cloud].gsub!(/\./, '-')
-          publisher.publish("mitt.#{r[:cloud]}.#{r[:slot]}.#{r[:id]}.#{r[:metric]}", r[:value], r[:measure_time])
+          send("mitt.#{r[:cloud]}.#{r[:slot]}.#{r[:id]}.#{r[:metric]}", r[:value], r[:measure_time])
         end
       end
       'ok'
@@ -62,7 +61,7 @@ module Backstop
         repo = data['repository']['name']
         author = commit['author']['email'].gsub(/[\.@]/, '-')
         measure_time = DateTime.parse(commit['timestamp']).strftime('%s')
-        publisher.publish("#{data['source']}.#{repo}.#{data['ref']}.#{author}.#{commit['id']}", 1, measure_time)
+        send("#{data['source']}.#{repo}.#{data['ref']}.#{author}.#{commit['id']}", 1, measure_time)
       end
       'ok'
     end
@@ -91,7 +90,7 @@ module Backstop
         puts "UNKNOWN ALERT: #{incident.to_json}"
         halt 400, 'unknown alert'
       end
-      publisher.publish("alerts.#{metric}", 1, Time.parse(incident['created_on']).to_i)
+      send("alerts.#{metric}", 1, Time.parse(incident['created_on']).to_i)
       'ok'
     end
 

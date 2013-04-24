@@ -8,7 +8,7 @@ module Backstop
       @api_key = opts[:api_key]
     end
 
-    def close
+    def close_all
       connections.each { |c| c.close }
     end
 
