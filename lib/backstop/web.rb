@@ -16,13 +16,13 @@ module Backstop
       def publisher
         @@publisher ||= Backstop::Publisher.new(Config.carbon_urls, :api_key => Config.api_key)
       end
-      def send(msg)
+      def send(metric, value, time)
         begin
-          publisher.publish(msg)
+          publisher.publish(metric, value, time)
         rescue
           publisher.close
           @@publisher = nil
-          publish(msg)
+          send(metric, value, time)
         end
       end
     end
