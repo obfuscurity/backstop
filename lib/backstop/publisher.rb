@@ -17,9 +17,11 @@ module Backstop
       c = connections.sample
       begin
         c.puts("#{metric_name(name)} #{value} #{time}")  
-      rescue
-        puts "connection lost, reopening socket"
-        c.reopen(c)
+      rescue Errno::EPIPE => e
+        puts "#{e.message}, attempting reconnect to remote socket"
+        remote_port, remote_addr = c.peeraddr.slice(1,2)
+        c.close
+        @connections.push(TCPSocket.new(remote_port, remote_addr))
         self.publish(name, value, time)
       end
     end
