@@ -13,26 +13,10 @@ module Backstop
     end
 
     def publish(name, value, time=Time.now.to_i)
-      puts "starting publish, connections is:"
-      p connections
-      c = connections.sample
       begin
-        c.puts("#{metric_name(name)} #{value} #{time}")  
-      rescue
-        puts "exception"
-        puts "attempting reconnect to remote socket"
-        remote_port, remote_addr = c.peeraddr.slice(1,2)
-        puts "remote port is #{remote_port}"
-        puts "remote addr is #{remote_addr}"
-        puts "closing connection"
-        c.close
-        puts "connections looks like:"
-        p connections
-        puts "opening a new connection"
-        @connections.push(TCPSocket.new(remote_port, remote_addr))
-        puts "now connections looks like:"
-        p connections
-        self.publish(name, value, time)
+        connections.sample.puts("#{metric_name(name)} #{value} #{time}")  
+      rescue Errno::EPIPE => e
+        raise e
       end
     end
   end

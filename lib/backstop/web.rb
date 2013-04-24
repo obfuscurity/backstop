@@ -16,6 +16,15 @@ module Backstop
       def publisher
         @@publisher ||= Backstop::Publisher.new(Config.carbon_urls, :api_key => Config.api_key)
       end
+      def send(msg)
+        begin
+          publisher.publish(msg)
+        rescue
+          publisher.close
+          @@publisher = nil
+          publish(msg)
+        end
+      end
     end
 
     get '/health' do
@@ -102,7 +111,7 @@ module Backstop
         else 
           data['source'] = params[:name]
           halt 400, 'missing fields' unless (data['metric'] && data['value'] && data['measure_time'])
-          publisher.publish("#{data['source']}.#{data['metric']}", data['value'], data['measure_time'])
+          send("#{data['source']}.#{data['metric']}", data['value'], data['measure_time'])
         end
         'ok'
       else
