@@ -106,7 +106,7 @@ module Backstop
           data.each do |item|
             item['source'] = params[:name]
             halt 400, 'missing fields' unless (item['metric'] && item['value'] && item['measure_time'])
-            publisher.publish("#{item['source']}.#{item['metric']}", item['value'], item['measure_time'])
+            send("#{item['source']}.#{item['metric']}", item['value'], item['measure_time'])
           end 
         else 
           data['source'] = params[:name]
