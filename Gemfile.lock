@@ -6,7 +6,7 @@ GEM
     eventmachine (0.12.10)
     json (1.6.1)
     newrelic_rpm (3.3.4.1)
-    rack (1.4.1)
+    rack (1.5.2)
     rack-protection (1.2.0)
       rack
     rack-test (0.6.1)
