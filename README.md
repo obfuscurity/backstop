@@ -72,7 +72,12 @@ Backstop supports optional Basic Authentication through Rack::Auth::Basic. Simpl
 
 ### Local
 
+The following instructions assume a working Ruby installation with the bundler gem already installed on your system.
+
 ```bash
+$ git clone https://github.com/obfuscurity/backstop.git
+$ cd backstop
+$ bundle install
 $ export CARBON_URLS=...
 $ export PREFIXES=...
 $ export BACKSTOP_AUTH=... (optional)
@@ -82,7 +87,7 @@ $ foreman start
 ### Heroku
 
 ```bash
-$ heroku create -s cedar
+$ heroku create
 $ heroku config:add CARBON_URLS=...
 $ heroku config:add PREFIXES=...
 $ heroku config:add BACKSTOP_AUTH=... (optional)
