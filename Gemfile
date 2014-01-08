@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 ruby '1.9.3'
 
 gem 'bundler'
+gem 'foreman'
 gem 'sinatra'
 gem 'thin'
 gem 'json'
