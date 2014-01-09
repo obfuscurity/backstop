@@ -42,7 +42,11 @@ alerts.nagios.web1.diskspace 1 1365206103
 
 ### Custom Metrics
 
-Use the `/publish` endpoint in conjunction with one of the approved `PREFIXES` for submitting metrics to Backstop. In most environments it makes sense to use distinct prefixes for normal (e.g. gauge, counters, etc) metrics vs annotation (event-style) metrics.
+Use the `/publish` endpoint in conjunction with one of the approved `PREFIXES` for submitting metrics to Backstop. In most environments it makes sense to use distinct prefixes for normal (e.g. gauge, counters, etc) metrics vs annotation (event-style) metrics. `PREFIXES` is defined as a comma-delimited list of prefix strings. For example:
+
+```bash
+export PREFIXES='test,app1,app2'
+```
 
 #### Sending Metrics
 
