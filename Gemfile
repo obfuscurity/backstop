@@ -4,6 +4,7 @@ ruby '1.9.3'
 
 gem 'bundler'
 gem 'foreman'
+gem 'dotenv'
 gem 'sinatra'
 gem 'thin'
 gem 'json'

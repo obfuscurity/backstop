@@ -41,6 +41,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
+  dotenv
   foreman
   json
   newrelic_rpm
