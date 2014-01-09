@@ -74,6 +74,12 @@ Graphite hosting service [Hosted Graphite](https://www.hostedgraphite.com) requi
 
 Backstop supports optional Basic Authentication through Rack::Auth::Basic. Simply set BACKSTOP_AUTH to your colon-delimited credentials (e.g. `user:pass`).
 
+The `CARBON_URLS` variable must be set to one or more valid destinations. Examples:
+
+```
+export CARBON_URLS="carbon://10.10.10.10:2003,carbon://10.10.20.10:2003"
+```
+
 ### Local
 
 The following instructions assume a working Ruby installation with the bundler gem already installed on your system.
