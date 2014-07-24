@@ -73,6 +73,7 @@ Graphite hosting service [Hosted Graphite](https://www.hostedgraphite.com) requi
 ## Deployment
 
 Backstop supports optional Basic Authentication through Rack::Auth::Basic. Simply set BACKSTOP_AUTH to your colon-delimited credentials (e.g. `user:pass`).
+Multiple credentials can be set, as long as they are comma-separated (e.g `user1:pass1,user2:pass2`).
 
 The `CARBON_URLS` variable must be set to one or more valid destinations. Examples:
 
