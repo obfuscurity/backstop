@@ -25,7 +25,7 @@ module Backstop
       end
       def authorized?
         @auth ||=  Rack::Auth::Basic::Request.new(request.env)
-        @auth.provided? and @auth.basic? and @auth.credentials and @auth.credentials == ENV['BACKSTOP_AUTH'].split(':')
+        @auth.provided? and @auth.basic? and @auth.credentials and ENV['BACKSTOP_AUTH'].split(',').collect{|auth| auth.split(':')}.include?(@auth.credentials)
       end
       def publisher
         @@publisher ||= Backstop::Publisher.new(Config.carbon_urls, :api_key => Config.api_key)
