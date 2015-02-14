@@ -49,6 +49,7 @@ describe Backstop::Application do
   context 'POST /collectd' do
     let(:good_collectd_data) { File.open(File.dirname(__FILE__) + '/good_collectd_data.json').read }
     let(:bad_collectd_data) { File.open(File.dirname(__FILE__) + '/bad_collectd_data.json').read }
+    let(:generic_collectd_data) { File.open(File.dirname(__FILE__) + '/generic_collectd_data.json').read }
 
     it 'should require JSON' do
       post '/collectd', 'foo'
@@ -69,6 +70,15 @@ describe Backstop::Application do
       post '/collectd', bad_collectd_data
       last_response.status.should eq(400)
       last_response.body.should eq('missing fields')
+    end
+
+    it 'should handle a generic collectd metric' do
+      p = double('publisher')
+      Backstop::Publisher.should_receive(:new) { p }
+      p.should_receive(:publish).with('mitt.leeloo.octo.it.irq.IWI', 42, 1423949215.334)
+      post '/collectd', generic_collectd_data
+      last_response.body.should eq('ok')
+      last_response.status.should eq(200)
     end
   end
 
