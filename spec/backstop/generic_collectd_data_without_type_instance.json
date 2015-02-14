@@ -1,0 +1,13 @@
+[
+  {
+    "values":[42], 
+    "dstypes":["gauge"], 
+    "dsnames":["value"], 
+    "time":1423950659.88, 
+    "interval":10.0, 
+    "host":"leeloo.octo.it", 
+    "plugin":"users", 
+    "plugin_instance":"", 
+    "type":"users", 
+    "type_instance":""}
+]
