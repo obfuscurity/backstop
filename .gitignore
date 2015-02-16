@@ -1,4 +1,5 @@
 .bundle
 .env
 .foreman
-
+*~ 
+*.swp
