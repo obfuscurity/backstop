@@ -1,0 +1,14 @@
+[
+  {
+    "values":[42], 
+    "dstypes":["derive"], 
+    "dsnames":["value"], 
+    "time":1423949215.334, 
+    "interval":10.0, 
+    "host":"leeloo.octo.it", 
+    "plugin":"irq", 
+    "plugin_instance":"", 
+    "type":"irq", 
+    "type_instance":"IWI"
+  }
+]

@@ -37,11 +37,10 @@ class CollectdData
   def parse_plugin
     plugin = data['plugin']
     method = "parse_plugin_#{plugin}".to_sym
-    if self.respond_to? method
-      send(method)
-    else
-      []
+    unless self.respond_to? method
+      method = :parse_plugin_generic
     end
+    send(method)
   end
 
 end
