@@ -11,7 +11,7 @@ GEM
     json (1.8.2)
     newrelic_rpm (3.9.9.275)
     rack (1.6.11)
-    rack-protection (1.5.3)
+    rack-protection (1.5.5)
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
