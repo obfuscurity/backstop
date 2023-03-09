@@ -10,7 +10,7 @@ GEM
     mustermann (2.0.2)
       ruby2_keywords (~> 0.0.1)
     newrelic_rpm (8.3.0)
-    rack (2.2.6.2)
+    rack (2.2.6.3)
     rack-protection (2.2.3)
       rack
     rack-test (1.1.0)
