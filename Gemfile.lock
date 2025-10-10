@@ -1,20 +1,20 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    base64 (0.2.0)
+    base64 (0.3.0)
     diff-lcs (1.5.1)
     dotenv (3.1.7)
     foreman (0.88.1)
     json (2.9.1)
-    logger (1.6.4)
-    mustermann (3.0.3)
+    logger (1.7.0)
+    mustermann (3.0.4)
       ruby2_keywords (~> 0.0.1)
     newrelic_rpm (9.16.1)
     nio4r (2.7.4)
     puma (6.5.0)
       nio4r (~> 2.0)
     rack (3.1.18)
-    rack-protection (4.1.1)
+    rack-protection (4.2.0)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
       rack (>= 3.0.0, < 4)
@@ -40,14 +40,14 @@ GEM
       rspec-support (~> 3.13.0)
     rspec-support (3.13.2)
     ruby2_keywords (0.0.5)
-    sinatra (4.1.1)
+    sinatra (4.2.0)
       logger (>= 1.6.0)
       mustermann (~> 3.0)
       rack (>= 3.0.0, < 4)
-      rack-protection (= 4.1.1)
+      rack-protection (= 4.2.0)
       rack-session (>= 2.0.0, < 3)
       tilt (~> 2.0)
-    tilt (2.5.0)
+    tilt (2.6.1)
     yajl-ruby (1.4.3)
 
 PLATFORMS
@@ -65,7 +65,7 @@ DEPENDENCIES
   rackup
   rake
   rspec
-  sinatra (~> 4.1.0)
+  sinatra (~> 4.2.0)
   yajl-ruby
 
 BUNDLED WITH
